@@ -7,6 +7,9 @@ import { Home, About, Contact, Favourites } from "./pages";
 // Layouts
 import MainLayout from "./layouts/MainLayout";
 
+// Actions
+import { action as HomeAction } from "./pages/Home";
+
 function App() {
   const routes = createBrowserRouter([
     {
@@ -16,6 +19,7 @@ function App() {
         {
           index: true,
           element: <Home />,
+          action: HomeAction,
         },
         {
           path: "/about",
