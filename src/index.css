@@ -6,4 +6,8 @@
   .align-elements {
     @apply mx-auto max-w-[1600px] px-5;
   }
+
+  .hover-icons {
+    @apply invisible absolute opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100;
+  }
 }
