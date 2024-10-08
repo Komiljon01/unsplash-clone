@@ -6,10 +6,13 @@ import { Link } from "react-router-dom";
 
 // React icons
 import { FcPicture } from "react-icons/fc";
+import { FaHeart, FaMoon, FaSun } from "react-icons/fa";
 
 // Components
 import NavLinks from "./NavLinks";
-import { FaHeart, FaMoon, FaSun } from "react-icons/fa";
+
+// Custom hook
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 const themeFromLocalStorage = () => {
   return localStorage.getItem("theme") || "winter";
@@ -17,6 +20,7 @@ const themeFromLocalStorage = () => {
 
 function Navbar() {
   const [theme, setTheme] = useState(themeFromLocalStorage);
+  const { likedImages } = useGlobalContext();
 
   const toggleTheme = () => {
     const newTheme = theme === "winter" ? "dracula" : "winter";
@@ -59,7 +63,7 @@ function Navbar() {
           <Link to="/favourites">
             <div className="indicator">
               <span className="badge indicator-item badge-secondary badge-sm">
-                0
+                {likedImages.length}
               </span>
               <FaHeart className="h-6 w-6" />
             </div>

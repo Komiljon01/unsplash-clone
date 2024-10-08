@@ -3,15 +3,38 @@ import { FaHeart } from "react-icons/fa";
 import { GoArrowDown } from "react-icons/go";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
-function Image({ image }) {
+// Custom hook
+import { useGlobalContext } from "../hooks/useGlobalContext";
+
+function Image({ image, likedImage }) {
   const { links, urls, alt_description, user } = image;
+  const { likedImages, dispatch } = useGlobalContext();
+
+  const addLikedImage = (image) => {
+    const alreadyAdded = likedImages.some((img) => {
+      return img.id === image.id;
+    });
+
+    if (!alreadyAdded) {
+      dispatch({ type: "LIKE", payload: image });
+    } else {
+      dispatch({ type: "UNLIKE", payload: image.id });
+    }
+  };
 
   return (
     <div className="group relative">
       <span
-        className={`hover-icons right-3 top-3 z-[1] grid h-6 w-8 cursor-pointer place-items-center rounded bg-gray-300/90 hover:bg-white md:h-8 md:w-10`}
+        className={`hover-icons right-3 top-3 z-[1] grid h-6 w-8 cursor-pointer place-items-center rounded bg-gray-300/90 hover:bg-white md:h-8 md:w-10 ${
+          likedImage && "bg-red-600 hover:bg-red-500"
+        }`}
+        onClick={() => addLikedImage(image)}
       >
-        <FaHeart className={`text-xs md:text-[14px] dark:text-black`} />
+        <FaHeart
+          className={`text-xs md:text-[14px] dark:text-black ${
+            likedImage && "text-white dark:text-white"
+          }`}
+        />
       </span>
 
       <span className="hover-icons bottom-3 left-3 z-[1] flex items-center gap-2">
