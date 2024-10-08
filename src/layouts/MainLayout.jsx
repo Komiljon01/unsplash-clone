@@ -2,7 +2,7 @@
 import { Outlet } from "react-router-dom";
 
 // Components
-import { Navbar } from "../components";
+import { Navbar, Footer } from "../components";
 
 function MainLayout() {
   return (
@@ -15,6 +15,7 @@ function MainLayout() {
       </main>
 
       {/* Footer */}
+      <Footer />
     </>
   );
 }

@@ -1,7 +1,13 @@
 // React
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 export const GlobalContext = createContext();
+
+const dataFromLocalStorage = () => {
+  return (
+    JSON.parse(localStorage.getItem("my-splash-data")) || { likedImages: [] }
+  );
+};
 
 const changeState = (state, action) => {
   const { type, payload } = action;
@@ -20,7 +26,11 @@ const changeState = (state, action) => {
 };
 
 export function GlobalContextProvider({ children }) {
-  const [state, dispatch] = useReducer(changeState, { likedImages: [] });
+  const [state, dispatch] = useReducer(changeState, dataFromLocalStorage());
+
+  useEffect(() => {
+    localStorage.setItem("my-splash-data", JSON.stringify(state));
+  }, [state]);
 
   return (
     <GlobalContext.Provider value={{ ...state, dispatch }}>

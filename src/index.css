@@ -10,4 +10,18 @@
   .hover-icons {
     @apply invisible absolute opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100;
   }
+
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+
+  #root {
+    @apply flex flex-col;
+  }
+
+  main {
+    @apply grow;
+  }
 }
