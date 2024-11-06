@@ -5,7 +5,10 @@ export const GlobalContext = createContext();
 
 const dataFromLocalStorage = () => {
   return (
-    JSON.parse(localStorage.getItem("my-splash-data")) || { likedImages: [] }
+    JSON.parse(localStorage.getItem("my-splash-data")) || {
+      likedImages: [],
+      downloads: [],
+    }
   );
 };
 

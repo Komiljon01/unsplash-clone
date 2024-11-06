@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 // React icons
 import { FcPicture } from "react-icons/fc";
-import { FaHeart, FaMoon, FaSun } from "react-icons/fa";
+import { FaDownload, FaHeart, FaMoon, FaSun } from "react-icons/fa";
 
 // Components
 import NavLinks from "./NavLinks";
@@ -14,13 +14,14 @@ import NavLinks from "./NavLinks";
 // Custom hook
 import { useGlobalContext } from "../hooks/useGlobalContext";
 
+// Get theme from LocalStorage
 const themeFromLocalStorage = () => {
   return localStorage.getItem("theme") || "winter";
 };
 
 function Navbar() {
   const [theme, setTheme] = useState(themeFromLocalStorage);
-  const { likedImages } = useGlobalContext();
+  const { likedImages, downloads } = useGlobalContext();
 
   const toggleTheme = () => {
     const newTheme = theme === "winter" ? "dracula" : "winter";
@@ -59,7 +60,16 @@ function Navbar() {
           </ul>
         </div>
 
-        <div className="navbar-end flex items-center gap-3">
+        <div className="navbar-end flex items-center gap-6">
+          <Link to="/downloads">
+            <div className="indicator">
+              <span className="badge indicator-item badge-secondary badge-sm">
+                {downloads.length}
+              </span>
+              <FaDownload className="h-6 w-6" />
+            </div>
+          </Link>
+
           <Link to="/favourites">
             <div className="indicator">
               <span className="badge indicator-item badge-secondary badge-sm">
@@ -78,10 +88,10 @@ function Navbar() {
             />
 
             {/* sun icon */}
-            <FaSun className="swap-on h-6 w-6 fill-current" />
+            <FaSun className="swap-on h-7 w-7 fill-current" />
 
             {/* moon icon */}
-            <FaMoon className="swap-off h-6 w-6 fill-current" />
+            <FaMoon className="swap-off h-7 w-7 fill-current" />
           </label>
         </div>
       </div>

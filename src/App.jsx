@@ -2,7 +2,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // Pages
-import { Home, About, Contact, Favourites } from "./pages";
+import {
+  Home,
+  About,
+  Contact,
+  Favourites,
+  Downloads,
+  ImageInfo,
+} from "./pages";
 
 // Layouts
 import MainLayout from "./layouts/MainLayout";
@@ -32,6 +39,14 @@ function App() {
         {
           path: "/favourites",
           element: <Favourites />,
+        },
+        {
+          path: "/downloads",
+          element: <Downloads />,
+        },
+        {
+          path: "/image-info/:id",
+          element: <ImageInfo />,
         },
       ],
     },
