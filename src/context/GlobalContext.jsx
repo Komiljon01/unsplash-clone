@@ -23,6 +23,13 @@ const changeState = (state, action) => {
         ...state,
         likedImages: state.likedImages.filter((image) => image.id !== payload),
       };
+    case "ADD_DOWNLOADS":
+      return { ...state, downloads: [...state.downloads, payload] };
+    case "REMOVE_DOWNLOAD":
+      return {
+        ...state,
+        downloads: state.downloads.filter((image) => image.id !== payload),
+      };
     default:
       return state;
   }

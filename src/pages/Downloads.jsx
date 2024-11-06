@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 // Custom Hook
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import { ImageContainer } from "../components";
 
 function Downloads() {
   const { downloads } = useGlobalContext();
@@ -20,7 +21,11 @@ function Downloads() {
     );
   }
 
-  return <div>Downloads</div>;
+  return (
+    <div className="align-elements py-10">
+      <ImageContainer images={downloads} />
+    </div>
+  );
 }
 
 export default Downloads;

@@ -1,6 +1,5 @@
 function Contact() {
-    return <div>Contact</div>;
-  }
-  
-  export default Contact;
-  
+  return <div className="align-elements pt-10">Contact</div>;
+}
+
+export default Contact;

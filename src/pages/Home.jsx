@@ -10,6 +10,9 @@ import { useFetch } from "../hooks/useFetch";
 // Components
 import { Search, ImageContainer } from "../components";
 
+// React icons
+import { FaSpinner } from "react-icons/fa";
+
 // Action
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -50,13 +53,19 @@ function Home() {
     return <h1>Error: {error}</h1>;
   }
 
+  if (isPending) {
+    return (
+      <div className="loading loading-spinner mx-auto flex h-full items-center justify-center text-3xl">
+        <FaSpinner />
+      </div>
+    );
+  }
+
   return (
     <div className="align-elements">
       <div className="my-10">
         <Search />
       </div>
-
-      {isPending && <h1>Loading...</h1>}
 
       {allImages.length > 0 && (
         <>
@@ -66,6 +75,7 @@ function Home() {
             <button
               className="btn-light btn btn-outline no-animation btn-block md:btn-lg"
               onClick={() => setPageParam(pageParam + 1)}
+              type="button"
             >
               Load more
             </button>

@@ -21,8 +21,20 @@ const themeFromLocalStorage = () => {
 
 function Navbar() {
   const [theme, setTheme] = useState(themeFromLocalStorage);
+  const [isFixed, setIsFixed] = useState(false);
   const { likedImages, downloads } = useGlobalContext();
 
+  // Set fixed when scroll is over 250px
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsFixed(window.scrollY > 250);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Toggle Theme
   const toggleTheme = () => {
     const newTheme = theme === "winter" ? "dracula" : "winter";
     setTheme(newTheme);
@@ -34,7 +46,11 @@ function Navbar() {
   }, [theme]);
 
   return (
-    <header className="bg-base-200">
+    <header
+      className={`bg-base-200 ${
+        isFixed ? "fixed left-0 top-0 z-50 w-full shadow-md" : "relative"
+      }`}
+    >
       <div className="align-elements navbar">
         <div className="navbar-start">
           <Link to="/">

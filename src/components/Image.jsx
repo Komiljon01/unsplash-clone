@@ -1,5 +1,5 @@
 // React icons
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaTrash } from "react-icons/fa";
 import { GoArrowDown } from "react-icons/go";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
@@ -9,9 +9,9 @@ import { useGlobalContext } from "../hooks/useGlobalContext";
 // rrd imports
 import { Link } from "react-router-dom";
 
-function Image({ image, likedImage }) {
+function Image({ image, likedImage, downloadedImage }) {
   const { links, urls, alt_description, user } = image;
-  const { likedImages, dispatch } = useGlobalContext();
+  const { likedImages, downloads, dispatch } = useGlobalContext();
 
   const addLikedImage = (image, event) => {
     event.preventDefault();
@@ -30,7 +30,16 @@ function Image({ image, likedImage }) {
   const downloadImage = (event) => {
     event.preventDefault();
 
-    window.open(`${links.download}&force=true}`, "_blank");
+    const alreadyAdded = downloads.some((img) => {
+      return img.id === image.id;
+    });
+
+    if (!alreadyAdded) {
+      window.open(`${links.download}&force=true}`, "_blank");
+      dispatch({ type: "ADD_DOWNLOADS", payload: image });
+    } else {
+      dispatch({ type: "REMOVE_DOWNLOAD", payload: image.id });
+    }
   };
 
   return (
@@ -77,7 +86,13 @@ function Image({ image, likedImage }) {
 
         <span className="hover-icons bottom-3 right-3 grid h-6 w-8 cursor-pointer place-items-center rounded bg-gray-300/90 hover:bg-white md:h-8 md:w-10">
           <span onClick={(e) => downloadImage(e)}>
-            <GoArrowDown className="text-sm md:text-[18px] dark:text-black" />
+            {downloadedImage ? (
+              <FaTrash className="text-sm md:text-[14px] dark:text-red-700" />
+            ) : (
+              <GoArrowDown className="text-sm md:text-[18px] dark:text-black" />
+            )}
+            {/* <GoArrowDown className="text-sm md:text-[18px] dark:text-black" /> */}
+            {/* <FaTrash className="text-sm md:text-[14px] dark:text-red-700" /> */}
           </span>
         </span>
       </div>
