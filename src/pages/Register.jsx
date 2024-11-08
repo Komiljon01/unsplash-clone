@@ -1,11 +1,18 @@
 // rrd imports
 import { Form, Link } from "react-router-dom";
 
+// Register hook
+import { useRegister } from "../hooks/useRegister";
+
 // Components
 import { FormInput } from "../components";
+
+// React icons
 import { FcGoogle } from "react-icons/fc";
 
 function Register() {
+  const { registerWithGoggle } = useRegister();
+
   return (
     <div className="flex min-h-screen w-full">
       <div className="auth-bg-image hidden w-[40%] md:block"></div>
@@ -34,6 +41,7 @@ function Register() {
             <button
               type="button"
               className="btn btn-secondary btn-sm grow md:btn-md"
+              onClick={registerWithGoggle}
             >
               <span>Continue with Goggle</span>
               <FcGoogle className="h-5 w-5" />

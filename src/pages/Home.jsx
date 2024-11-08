@@ -26,9 +26,11 @@ export const action = async ({ request }) => {
       duration: 3000,
       position: "top-right",
     });
-  }
 
-  return search;
+    return null;
+  } else {
+    return search;
+  }
 };
 
 function Home() {
@@ -43,13 +45,13 @@ function Home() {
     "Tesla",
     "Paris",
     "Sunset",
+    "Turkey",
     "Forests",
     "Uzbekistan",
     "Smartphone",
     "Ocean",
     "Tokyo",
-    "Desert",
-    "Robot",
+    "Nature",
   ];
 
   useEffect(() => {
@@ -59,7 +61,7 @@ function Home() {
 
   // GET Data
   const { data, isPending, error } = useFetch(
-    `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_ACCESS_KEY}&query=${searchParamFromAction ?? query}&page=${pageParam}`,
+    `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_ACCESS_KEY}&query=${searchParamFromAction ?? "tesla"}&page=${pageParam}`,
   );
 
   useEffect(() => {

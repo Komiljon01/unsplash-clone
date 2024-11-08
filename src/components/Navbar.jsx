@@ -14,6 +14,13 @@ import NavLinks from "./NavLinks";
 // Custom hook
 import { useGlobalContext } from "../hooks/useGlobalContext";
 
+// Firebase
+import { auth } from "../firebase/firebaseConfig";
+import { signOut } from "firebase/auth";
+
+// Toast
+import { toast } from "sonner";
+
 // Get theme from LocalStorage
 const themeFromLocalStorage = () => {
   return localStorage.getItem("theme") || "winter";
@@ -22,7 +29,7 @@ const themeFromLocalStorage = () => {
 function Navbar() {
   const [theme, setTheme] = useState(themeFromLocalStorage);
   const [isFixed, setIsFixed] = useState(false);
-  const { likedImages, downloads } = useGlobalContext();
+  const { likedImages, downloads, user, dispatch } = useGlobalContext();
 
   // Set fixed when scroll is over 250px
   useEffect(() => {
@@ -44,6 +51,16 @@ function Navbar() {
     localStorage.setItem("theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
+
+  const signOutUser = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Come back soon!");
+      dispatch({ type: "LOGOUT" });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <header
@@ -109,6 +126,40 @@ function Navbar() {
             {/* moon icon */}
             <FaMoon className="swap-off h-7 w-7 fill-current" />
           </label>
+
+          <div className="flex items-center gap-1">
+            <p className="hidden sm:block">{user.displayName.split(" ")[0]}</p>
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="avatar btn btn-circle btn-ghost"
+              >
+                <div className="w-10 rounded-full">
+                  <img alt={`${user.displayName} avatar`} src={user.photoURL} />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+              >
+                <li>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li>
+                  <button type="button" onClick={signOutUser}>
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </header>
