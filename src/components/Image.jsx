@@ -9,6 +9,9 @@ import { useGlobalContext } from "../hooks/useGlobalContext";
 // rrd imports
 import { Link } from "react-router-dom";
 
+// Toast
+import { toast } from "sonner";
+
 function Image({ image, likedImage, downloadedImage }) {
   const { links, urls, alt_description, user } = image;
   const { likedImages, downloads, dispatch } = useGlobalContext();
@@ -22,8 +25,10 @@ function Image({ image, likedImage, downloadedImage }) {
 
     if (!alreadyAdded) {
       dispatch({ type: "LIKE", payload: image });
+      toast.success("Image added successfully");
     } else {
       dispatch({ type: "UNLIKE", payload: image.id });
+      toast.warning("Image has been removed");
     }
   };
 
@@ -37,8 +42,10 @@ function Image({ image, likedImage, downloadedImage }) {
     if (!alreadyAdded) {
       window.open(`${links.download}&force=true}`, "_blank");
       dispatch({ type: "ADD_DOWNLOADS", payload: image });
+      toast.success("Your new favorite is now in Downloads");
     } else {
       dispatch({ type: "REMOVE_DOWNLOAD", payload: image.id });
+      toast.warning("Deleted from your Downloads");
     }
   };
 
@@ -91,8 +98,6 @@ function Image({ image, likedImage, downloadedImage }) {
             ) : (
               <GoArrowDown className="text-sm md:text-[18px] dark:text-black" />
             )}
-            {/* <GoArrowDown className="text-sm md:text-[18px] dark:text-black" /> */}
-            {/* <FaTrash className="text-sm md:text-[14px] dark:text-red-700" /> */}
           </span>
         </span>
       </div>

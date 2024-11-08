@@ -11,6 +11,10 @@
     @apply invisible absolute opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100;
   }
 
+  .auth-bg-image {
+    @apply bg-[url('https://picsum.photos/900/1200')] bg-cover bg-center bg-no-repeat;
+  }
+
   html,
   body,
   #root {

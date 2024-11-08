@@ -13,10 +13,20 @@ import { Search, ImageContainer } from "../components";
 // React icons
 import { FaSpinner } from "react-icons/fa";
 
+// Toast
+import { toast } from "sonner";
+
 // Action
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const search = formData.get("search");
+
+  if (!search) {
+    toast.warning("Whoops, the search field is empty. Please enter a query!", {
+      duration: 3000,
+      position: "top-right",
+    });
+  }
 
   return search;
 };
@@ -27,8 +37,29 @@ function Home() {
   const [pageParam, setPageParam] = useState(1);
   const prevSearchParam = useRef(searchParamFromAction);
 
+  // Random Search
+  const [query, setQuery] = useState("");
+  const randomWords = [
+    "Tesla",
+    "Paris",
+    "Sunset",
+    "Forests",
+    "Uzbekistan",
+    "Smartphone",
+    "Ocean",
+    "Tokyo",
+    "Desert",
+    "Robot",
+  ];
+
+  useEffect(() => {
+    const index = Math.floor(Math.random() * randomWords.length);
+    return setQuery(randomWords[index]);
+  }, []);
+
+  // GET Data
   const { data, isPending, error } = useFetch(
-    `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_ACCESS_KEY}&query=${searchParamFromAction ?? "all"}&page=${pageParam}`,
+    `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_ACCESS_KEY}&query=${searchParamFromAction ?? query}&page=${pageParam}`,
   );
 
   useEffect(() => {
@@ -41,6 +72,7 @@ function Home() {
     }
   }, [data, pageParam]);
 
+  // Fix search bug when searching for new items
   useEffect(() => {
     if (searchParamFromAction !== prevSearchParam.current) {
       setAllImages([]);
@@ -49,10 +81,12 @@ function Home() {
     }
   }, [searchParamFromAction]);
 
+  // Error
   if (error) {
     return <h1>Error: {error}</h1>;
   }
 
+  // Loading
   if (isPending) {
     return (
       <div className="loading loading-spinner mx-auto flex h-full items-center justify-center text-3xl">
