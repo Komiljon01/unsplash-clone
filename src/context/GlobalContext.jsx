@@ -1,6 +1,9 @@
 // React
 import { createContext, useEffect, useReducer } from "react";
 
+// Custom hook
+import { useCollection } from "../hooks/useCollection";
+
 export const GlobalContext = createContext();
 
 const changeState = (state, action) => {
@@ -13,13 +16,8 @@ const changeState = (state, action) => {
       return { ...state, user: payload };
     case "LOGOUT":
       return { ...state, user: null };
-    case "LIKE":
-      return { ...state, likedImages: [...state.likedImages, payload] };
-    case "UNLIKE":
-      return {
-        ...state,
-        likedImages: state.likedImages.filter((image) => image.id !== payload),
-      };
+    case "ADD_LIKED-IMAGES":
+      return { ...state, likedImages: payload };
     case "ADD_DOWNLOADS":
       return { ...state, downloads: [...state.downloads, payload] };
     case "REMOVE_DOWNLOAD":
@@ -33,6 +31,8 @@ const changeState = (state, action) => {
 };
 
 export function GlobalContextProvider({ children }) {
+  const { data: likedImages } = useCollection("likedImages");
+
   const [state, dispatch] = useReducer(changeState, {
     user: null,
     authReady: false,
@@ -43,6 +43,12 @@ export function GlobalContextProvider({ children }) {
   useEffect(() => {
     localStorage.setItem("my-splash-data", JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    if (likedImages) {
+      dispatch({ type: "ADD_LIKED-IMAGES", payload: likedImages });
+    }
+  }, [likedImages]);
 
   return (
     <GlobalContext.Provider value={{ ...state, dispatch }}>

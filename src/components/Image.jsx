@@ -5,6 +5,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 
 // Custom hook
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useFirestore } from "../hooks/useFirestore";
 
 // rrd imports
 import { Link } from "react-router-dom";
@@ -15,6 +16,7 @@ import { toast } from "sonner";
 function Image({ image, likedImage, downloadedImage }) {
   const { links, urls, alt_description, user } = image;
   const { likedImages, downloads, dispatch } = useGlobalContext();
+  const { addDocument, deleteDocument } = useFirestore();
 
   const addLikedImage = (image, event) => {
     event.preventDefault();
@@ -24,11 +26,9 @@ function Image({ image, likedImage, downloadedImage }) {
     });
 
     if (!alreadyAdded) {
-      dispatch({ type: "LIKE", payload: image });
-      toast.success("Image added successfully");
+      addDocument("likedImages", image.id, image);
     } else {
-      dispatch({ type: "UNLIKE", payload: image.id });
-      toast.warning("Image has been removed");
+      deleteDocument("likedImages", image.id);
     }
   };
 
