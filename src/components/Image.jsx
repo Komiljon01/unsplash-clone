@@ -14,21 +14,28 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 function Image({ image, likedImage, downloadedImage }) {
-  const { links, urls, alt_description, user } = image;
-  const { likedImages, downloads, dispatch } = useGlobalContext();
+  const {
+    likedImages,
+    downloads,
+    dispatch,
+    user: authUser,
+  } = useGlobalContext();
+
   const { addDocument, deleteDocument } = useFirestore();
+
+  const { links, urls, alt_description, user } = image;
 
   const addLikedImage = (image, event) => {
     event.preventDefault();
 
-    const alreadyAdded = likedImages.some((img) => {
+    const alreadyAdded = likedImages.find((img) => {
       return img.id === image.id;
     });
 
     if (!alreadyAdded) {
-      addDocument("likedImages", image.id, image);
+      addDocument("likedImages", { ...image, uid: authUser.uid });
     } else {
-      deleteDocument("likedImages", image.id);
+      deleteDocument("likedImages", alreadyAdded._id);
     }
   };
 

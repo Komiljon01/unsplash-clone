@@ -31,14 +31,18 @@ const changeState = (state, action) => {
 };
 
 export function GlobalContextProvider({ children }) {
-  const { data: likedImages } = useCollection("likedImages");
-
   const [state, dispatch] = useReducer(changeState, {
     user: null,
     authReady: false,
     likedImages: [],
     downloads: [],
   });
+
+  const { data: likedImages } = useCollection("likedImages", [
+    "uid",
+    "==",
+    state.user && state.user.uid,
+  ]);
 
   useEffect(() => {
     localStorage.setItem("my-splash-data", JSON.stringify(state));

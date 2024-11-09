@@ -1,13 +1,13 @@
 // Firebase
-import { doc, setDoc, deleteDoc } from "firebase/firestore";
+import { doc, addDoc, deleteDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
 // Toast
 import { toast } from "sonner";
 
 export const useFirestore = () => {
-  const addDocument = (collectionName, id, data) => {
-    setDoc(doc(db, collectionName, id), data)
+  const addDocument = (collectionName, data) => {
+    addDoc(collection(db, collectionName), data)
       .then(() => {
         toast.success("Image added successfully");
       })
