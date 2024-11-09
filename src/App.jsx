@@ -28,6 +28,7 @@ import { ProtectedRoutes } from "./components";
 
 // Actions
 import { action as HomeAction } from "./pages/Home";
+import { action as RegisterAction } from "./pages/Register";
 
 // Global Context
 import { useGlobalContext } from "./hooks/useGlobalContext";
@@ -82,6 +83,7 @@ function App() {
     {
       path: "/register",
       element: user ? <Navigate to="/" /> : <Register />,
+      action: RegisterAction,
     },
   ]);
 

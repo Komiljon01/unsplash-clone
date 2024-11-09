@@ -1,5 +1,8 @@
+// React
+import { useEffect } from "react";
+
 // rrd imports
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useActionData } from "react-router-dom";
 
 // Register hook
 import { useRegister } from "../hooks/useRegister";
@@ -10,8 +13,36 @@ import { FormInput } from "../components";
 // React icons
 import { FcGoogle } from "react-icons/fc";
 
+// Toast
+import { toast } from "sonner";
+
+// Action
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const displayName = formData.get("full-name");
+  const email = formData.get("email");
+  const password = formData.get("password");
+  const confirmPassword = formData.get("confirm-password");
+
+  if (password === confirmPassword) {
+    return { displayName, email, password, confirmPassword };
+  } else {
+    toast.error("Please enter matching passwords");
+    return null;
+  }
+};
+
 function Register() {
-  const { registerWithGoggle } = useRegister();
+  const { registerWithGoggle, registerWithEmail } = useRegister();
+  const inputData = useActionData();
+
+  useEffect(() => {
+    if (inputData) {
+      const { displayName, email, password } = inputData;
+
+      registerWithEmail(displayName, email, password);
+    }
+  }, [inputData]);
 
   return (
     <div className="flex min-h-screen w-full">
@@ -27,7 +58,7 @@ function Register() {
             <FormInput type="password" name="password" placeholder="Password" />
             <FormInput
               type="password"
-              name="password"
+              name="confirm-password"
               placeholder="Confirm password"
             />
           </div>

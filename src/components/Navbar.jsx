@@ -128,7 +128,11 @@ function Navbar() {
           </label>
 
           <div className="flex items-center gap-1">
-            <p className="hidden sm:block">{user.displayName.split(" ")[0]}</p>
+            {user.displayName && (
+              <p className="hidden sm:block">
+                {user.displayName.split(" ")[0]}
+              </p>
+            )}
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
@@ -136,7 +140,12 @@ function Navbar() {
                 className="avatar btn btn-circle btn-ghost"
               >
                 <div className="w-10 rounded-full">
-                  <img alt={`${user.displayName} avatar`} src={user.photoURL} />
+                  {user.photoURL && (
+                    <img
+                      alt={`${user.displayName} avatar`}
+                      src={user.photoURL}
+                    />
+                  )}
                 </div>
               </div>
               <ul
