@@ -1,8 +1,12 @@
-// rrd imports
-import { Form, Link } from "react-router-dom";
+// React
+import { useEffect } from "react";
 
-// Register hook
+// rrd imports
+import { Form, Link, useActionData } from "react-router-dom";
+
+// Custom hooks
 import { useRegister } from "../hooks/useRegister";
+import { useLogin } from "../hooks/useLogin";
 
 // Components
 import { FormInput } from "../components";
@@ -10,8 +14,27 @@ import { FormInput } from "../components";
 // React icons
 import { FcGoogle } from "react-icons/fc";
 
+// Action
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  return { email, password };
+};
+
 function Login() {
   const { registerWithGoggle } = useRegister();
+  const { loginWithEmail } = useLogin();
+
+  const inputData = useActionData();
+
+  useEffect(() => {
+    if (inputData) {
+      loginWithEmail(inputData.email, inputData.password);
+    }
+  }, [inputData]);
+
   return (
     <div className="flex min-h-screen w-full">
       <div className="auth-bg-image hidden w-[40%] md:block"></div>
@@ -29,7 +52,7 @@ function Login() {
               type="submit"
               className="btn btn-primary btn-sm grow md:btn-md"
             >
-              Register
+              Login
             </button>
             <button
               type="button"
