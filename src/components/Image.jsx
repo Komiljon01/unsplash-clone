@@ -28,6 +28,10 @@ function Image({ image, likedImage, downloadedImage }) {
   const addLikedImage = (image, event) => {
     event.preventDefault();
 
+    if (!authUser.emailVerified) {
+      return toast.info("Verify email in your profile");
+    }
+
     const alreadyAdded = likedImages.find((img) => {
       return img.id === image.id;
     });
@@ -41,6 +45,10 @@ function Image({ image, likedImage, downloadedImage }) {
 
   const downloadImage = (event) => {
     event.preventDefault();
+
+    if (!authUser.emailVerified) {
+      return toast.info("Verify email in your profile");
+    }
 
     const alreadyAdded = downloads.some((img) => {
       return img.id === image.id;

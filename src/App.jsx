@@ -21,6 +21,7 @@ import {
   ImageInfo,
   Login,
   Register,
+  Profile,
 } from "./pages";
 
 // Components
@@ -74,6 +75,10 @@ function App() {
         {
           path: "/image-info/:id",
           element: <ImageInfo />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
         },
       ],
     },
